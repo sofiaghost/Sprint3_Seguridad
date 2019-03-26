@@ -2,9 +2,10 @@ from .models import Measurement, Variable
 from django.shortcuts import render, redirect
 from .forms import VariableForm, MeasurementForm
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
-
+from django.contrib.auth.decorators import login_required
+import requests
 
 def index(request):
     return render(request, 'index.html')
@@ -17,7 +18,6 @@ def MeasurementList(request):
     }
     return render(request, 'Measurement/measurements.html', context)
 
-@login_required
 def MeasurementCreate(request):
     if request.method == 'POST':
         form = MeasurementForm(request.POST)
@@ -39,28 +39,36 @@ def MeasurementCreate(request):
 
 @login_required
 def VariableList(request):
-    queryset = Variable.objects.all()
-    context = {
-        'variable_list': queryset
-    }
-    return render(request, 'Variable/variables.html', context)
+    role = getRole(request)
+    if role == "Gerencia Campus":
+        queryset = Variable.objects.all()
+        context = {
+            'variable_list': queryset
+        }
+        return render(request, 'Variable/variables.html', context)
+    else:
+        return HttpResponse("Unauthorized User")
 
 @login_required
 def VariableCreate(request):
-    if request.method == 'POST':
-        form = VariableForm(request.POST)
-        if form.is_valid():
-            measurement = form.save()
-            measurement.save()
-            messages.add_message(request, messages.SUCCESS, 'Variable create successful')
-            return HttpResponseRedirect(reverse('variableCreate'))
+    role = getRole(request)
+    if role == "Gerencia Campus":
+        if request.method == 'POST':
+            form = VariableForm(request.POST)
+            if form.is_valid():
+                measurement = form.save()
+                measurement.save()
+                messages.add_message(request, messages.SUCCESS, 'Variable create successful')
+                return HttpResponseRedirect(reverse('variableCreate'))
+            else:
+                print(form.errors)
         else:
-            print(form.errors)
+            form = VariableForm()
+
+        context = {
+            'form': form,
+        }
+        return render(request, 'Variable/variableCreate.html', context)
     else:
-        form = VariableForm()
+        return HttpResponse("Unauthorized User")
 
-    context = {
-        'form': form,
-    }
-
-    return render(request, 'Variable/variableCreate.html', context)
