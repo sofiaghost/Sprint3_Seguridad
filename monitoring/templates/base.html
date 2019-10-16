@@ -35,7 +35,7 @@
                 </li>
             </ul>
 
-            <form class="form-inline my-2 my-lg-0">
+              <form class="form-inline my-2 my-lg-0">
                 {% if user.is_authenticated %}
                 <ul class="nav navbar-nav navbar-right">
                     <li><a style="font-size:120%" class="nav-link">{{ user.username }}</a></li>
@@ -46,14 +46,14 @@
                     <li><a style="font-size:120%; padding-right:20px" class="navbar-link" href="/login/auth0">Login</a></li>
                 </ul>
                 {% endif %}
-            </form>
+              </form>
 
           </div>
         </nav>
 
 
         <main> 
-          <div class="container" style="min-height: 460px;">
+          <div class="container" style="min-height: 580px;">
           {% block content %} 
           {% endblock %} 
           </div>
