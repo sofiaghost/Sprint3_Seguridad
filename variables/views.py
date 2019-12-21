@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from .forms import VariableForm
-from .logic.variable_logic import get_variables, create_variable
+from .logic.variable_logic import get_variables, get_variable, create_variable
 from django.contrib.auth.decorators import login_required
 from monitoring.auth0backend import getRole
 
@@ -18,6 +18,14 @@ def variable_list(request):
         return render(request, 'Variable/variables.html', context)
     else:
         return HttpResponse("Unauthorized User")
+
+@login_required
+def single_variable(request, id=0):
+    variable = get_variable(id)
+    context = {
+        'variable': variable
+    }
+    return render(request, 'Variable/variable.html', context)
 
 @login_required
 def variable_create(request):
