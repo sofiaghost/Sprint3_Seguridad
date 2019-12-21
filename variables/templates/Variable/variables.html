@@ -32,7 +32,13 @@
 
                         {% for variable in variable_list %}
                         <tr>
-                            <td>{{ variable.name }}</td>
+                            <td class="d-flex justify-content-between">
+                                {{ variable.name }}
+                                <button type="button" class="btn btn-primary waves-effect waves-light"
+                                        onClick=" window.location.href='/variable/{{ variable.id }}' ">
+                                    Detail
+                                </button>
+                            </td>
                         </tr>
                         {% endfor %}
 
