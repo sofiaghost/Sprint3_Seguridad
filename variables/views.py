@@ -20,6 +20,14 @@ def variable_list(request):
         return HttpResponse("Unauthorized User")
 
 @login_required
+def single_variable(request, id=0):
+    variable = get_variable(id)
+    context = {
+        'variable': variable
+    }
+    return render(request, 'Variable/variable.html', context)
+
+@login_required
 def variable_create(request):
     role = getRole(request)
     if role == "Gerencia Campus":
