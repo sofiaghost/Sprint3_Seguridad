@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from .forms import VariableForm
-from .logic.variable_logic import get_variables, create_variable
+from .logic.variable_logic import get_variables, get_variable, create_variable
 from django.contrib.auth.decorators import login_required
 from monitoring.auth0backend import getRole
 
