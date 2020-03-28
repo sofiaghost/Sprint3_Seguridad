@@ -5,7 +5,7 @@ def get_variables():
     return (queryset)
 
 def get_variable(id):
-    variable = Variable.objects.raw("SELECT * FROM variables_variable WHERE id=%s" % id)
+    variable = Variable.objects.raw("SELECT * FROM variables_variable WHERE id=%s" % id)[0]
     return (variable)
 
 def create_variable(form):
