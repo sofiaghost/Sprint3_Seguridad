@@ -5,7 +5,8 @@ from django.urls import reverse
 from .forms import VariableForm
 from .logic.variable_logic import get_variables, get_variable, create_variable
 from django.contrib.auth.decorators import login_required
-from monitoring.auth0backend import getRole
+# Descomentar cuando se cree el archivo monitoring/auth0backend.py
+#from monitoring.auth0backend import getRole
 
 @login_required
 def variable_list(request):
