@@ -20,7 +20,7 @@ def measurement_create(request):
         if form.is_valid():
             create_measurement(form)
             messages.add_message(request, messages.SUCCESS, 'Measurement create successful')
-            return HttpResponseRedirect(reverse('measurementCreate'))
+            return HttpResponseRedirect(reverse('measurementList'))
         else:
             print(form.errors)
     else:
