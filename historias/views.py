@@ -33,9 +33,16 @@ def single_historia(request, historia_id):
                 raise Http404("Historia clínica no encontrada")
             context = {'historia': historia}
             return render(request, 'Historia/historia.html', context)
+        except ValueError as e:
+            # Si se detecta una entrada inválida
+            messages.error(request, f"Entrada inválida: {str(e)}")
+            return HttpResponse(f"Entrada inválida: {str(e)}", status=400)
         except Exception as e:
             return HttpResponse(f"Error al acceder a la historia clínica: {str(e)}", status=500)
     return HttpResponse("Usuario no autorizado", status=401)
+
+
+
 
 @login_required
 def historia_create(request):
@@ -45,19 +52,20 @@ def historia_create(request):
             form = HistoriaForm(request.POST)
             if form.is_valid():
             
-                    # Pasamos el formulario directamente sin sanitización manual
+                try:
                     create_historia(form)
                     messages.add_message(request, messages.SUCCESS, 'Historia creada')
                     return HttpResponseRedirect(reverse('historiaCreate'))
+                except Exception as e:
+                    # En caso de error durante la creación, mostramos un mensaje
+                    messages.error(request, f"Error al crear la historia: {str(e)}")
+                    return HttpResponse(f"Error al crear la historia: {str(e)}", status=500)
             else:
-                 print(form.errors)
-
+                print(form.errors)
         else:
             form = HistoriaForm()
 
         context = {'form': form}
         return render(request, 'Historia/historiaCreate.html', context)
-    
+
     return HttpResponse("Usuario no autorizado", status=401)
-
-
